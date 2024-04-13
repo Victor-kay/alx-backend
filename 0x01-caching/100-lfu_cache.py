@@ -59,7 +59,7 @@ class LFUCache(BaseCaching):
     def get(self, key):
         """ Get an item by key and move it to the beginning of the OrderedDict
         """
-        if key not in self.cache_data:
+        if key is None or key not in self.cache_data:
             return None
 
         # Update frequency and move the key to the beginning of LRU OrderedDict
@@ -74,38 +74,39 @@ class LFUCache(BaseCaching):
 if __name__ == '__main__':
     my_cache = LFUCache()
 
+    # Testing Empty cache
+    my_cache.print_cache()
+
+    # Testing Cache with one element
     my_cache.put("A", "Hello")
+    my_cache.print_cache()
+    print(my_cache.get("A"))
+
+    # Testing put method with key or item as None
+    my_cache.put(None, "test")
+    my_cache.put("test_key", None)
+    my_cache.print_cache()
+
+    # Testing BaseCaching.MAX_ITEMS = 1 add 5 items
+    BaseCaching.MAX_ITEMS = 1
     my_cache.put("B", "World")
     my_cache.put("C", "Holberton")
     my_cache.put("D", "School")
-    my_cache.print_cache()
-    print(my_cache.get("B"))
     my_cache.put("E", "Battery")
     my_cache.print_cache()
-    my_cache.put("C", "Street")
+
+    # Reset MAX_ITEMS for next tests
+    BaseCaching.MAX_ITEMS = 2
+
+    # Testing BaseCaching.MAX_ITEMS = 2 add 10 items
+    for i in range(1, 11):
+        my_cache.put(f"Key{i}", f"Value{i}")
     my_cache.print_cache()
-    print(my_cache.get("A"))
-    print(my_cache.get("B"))
-    print(my_cache.get("C"))
-    my_cache.put("F", "Mission")
-    my_cache.print_cache()
-    my_cache.put("G", "San Francisco")
-    my_cache.print_cache()
-    my_cache.put("H", "H")
-    my_cache.print_cache()
-    my_cache.put("I", "I")
-    my_cache.print_cache()
-    print(my_cache.get("I"))
-    print(my_cache.get("H"))
-    print(my_cache.get("I"))
-    print(my_cache.get("H"))
-    print(my_cache.get("I"))
-    print(my_cache.get("H"))
-    my_cache.put("J", "J")
-    my_cache.print_cache()
-    my_cache.put("K", "K")
-    my_cache.print_cache()
-    my_cache.put("L", "L")
-    my_cache.print_cache()
-    my_cache.put("M", "M")
+
+    # Reset MAX_ITEMS for next tests
+    BaseCaching.MAX_ITEMS = 5
+
+    # Testing BaseCaching.MAX_ITEMS = 5 add 10 items
+    for i in range(1, 11):
+        my_cache.put(f"Key{i}", f"Value{i}")
     my_cache.print_cache()
