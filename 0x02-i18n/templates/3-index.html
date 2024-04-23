@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="{{ babel.locale }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ _('home_title') }}</title>
+</head>
+<body>
+    <h1>{{ _('home_header') }}</h1>
+    
+    <p>Current Language: {{ babel.locale }}</p>
+    
+    <form action="{{ url_for('set_locale') }}" method="post">
+        <select name="locale">
+            <option value="en" {% if babel.locale == 'en' %}selected{% endif %}>English</option>
+            <option value="fr" {% if babel.locale == 'fr' %}selected{% endif %}>French</option>
+        </select>
+        <input type="submit" value="Switch Language">
+    </form>
+</body>
+</html>
