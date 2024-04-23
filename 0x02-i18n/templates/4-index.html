@@ -6,7 +6,13 @@
     <title>{{ _('home_title') }}</title>
 </head>
 <body>
-    <h1>{{ _('home_header') }}</h1>
+    <h1>
+        {% if babel.locale == 'en' %}
+            {{ _('Welcome to Holberton') }}
+        {% elif babel.locale == 'fr' %}
+            {{ _('Bienvenue chez Holberton') }}
+        {% endif %}
+    </h1>
     
     <p>Current Language: {{ babel.locale }}</p>
     

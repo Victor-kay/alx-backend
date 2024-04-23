@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """
-3-app: Initializes a basic Flask web application with Babel integration.
+4-app: Flask app with forced locale functionality.
 """
 
-from typing import Union
 from flask import Flask, render_template, request, redirect, session, url_for
 from flask_babel import Babel, _, gettext
 
@@ -11,7 +10,7 @@ app = Flask(__name__)
 
 class Config:
     """
-    Config: Sets up Babel configurations and session type.
+    Config class to set up Babel configurations and session type.
     
     Attributes:
         LANGUAGES (list): Supported languages for the app.
@@ -32,10 +31,16 @@ babel = Babel(app)
 def get_locale() -> str:
     """
     get_locale: Determines the best match for the user's preferred language.
+    If locale parameter is present and supported, it will force that locale.
     
     Returns:
         str: Best match locale.
     """
+    forced_locale = request.args.get('locale')
+    
+    if forced_locale and forced_locale in app.config['LANGUAGES']:
+        return forced_locale
+    
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 @app.route('/')
@@ -46,15 +51,15 @@ def index() -> str:
     Returns:
         str: Rendered HTML content.
     """
-    return render_template('3-index.html')
+    return render_template('4-index.html')
 
 @app.route('/set_locale', methods=['POST'])
-def set_locale() -> Union[str, redirect]:
+def set_locale() -> redirect:
     """
     set_locale: Sets the locale based on POST request data.
     
     Returns:
-        Union[str, redirect]: Redirect to the index page or error message.
+        redirect: Redirect to the index page.
     """
     locale = request.form['locale']
     session['locale'] = locale
